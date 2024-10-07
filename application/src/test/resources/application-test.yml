@@ -1,0 +1,12 @@
+spring:
+  sql:
+    init:
+      data-locations: classpath:data-test.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:h2:mem:ecommercedb
+    username: test
+    password: test
+    driver-class-name: org.h2.Driver

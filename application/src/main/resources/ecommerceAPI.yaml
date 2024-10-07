@@ -1,0 +1,108 @@
+openapi: 3.0.3
+info:
+  title: Ecommerce API Specification for products operations
+  description: Simple swagger api for ITX ecommerce technical proof
+  version: 0.0.1-SNAPSHOT
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Manuel Jesús Gamero Quirós
+    email: mjgq93@gmail.com
+servers:
+  - url: http://localhost:8080/ecommerce
+  - url: https://prodgamero.com/ecommerce
+tags:
+  - name: products
+    description: Operations for products list operations
+
+paths:
+  /ecommerce/brand/{brandId}/product/price:
+    get:
+      tags:
+        - products
+      summary: Get products information
+      description: with filters return product with price information
+      operationId: getPriceInfo
+      parameters:
+        - name: brandId
+          in: path
+          description: brand of company
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: applicationDate
+          in: query
+          description: date selected for price checking
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: productId
+          in: query
+          description: product id filter
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceApi'
+        400:
+          description: Request error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        404:
+          description: Price not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        500:
+          description: Service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+components:
+  schemas:
+    PriceApi:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+          example: 35455
+        brandId:
+          type: Integer
+          example: 1
+        priceId:
+          type: integer
+          format: int32
+          example: 4
+        startDate:
+          type: date-time
+          example: 2024-10-04T14:30:00
+        endDate:
+          type: date-time
+          example: 2024-10-04T14:30:00
+        price:
+          type: number
+          example: 35.50
+        currency:
+          type: string
+          example: EUR
+    ErrorDto:
+      type: object
+      properties:
+        code:
+          type: string
+        technicalDescription:
+          type: string
+        userDescription:
+          type: string

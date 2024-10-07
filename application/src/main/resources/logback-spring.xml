@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- STANDARD CONSOLE OUTPUT -->
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(-%5p -) ${springAppName} [%X{traceId:-} - %X{spanId:-}] %-40.40logger{39}: %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- DEVELOPMENT PROFILE -->
+
+    <appender name="LOCAL-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>log/local/local.log</file>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>log/local/archived/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p - ${springAppName} [%X{traceId:-} - %X{spanId:-}] %-40.40logger{39}: %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- LOCAL -->
+    <springProfile name="local">
+        <root level="info">
+            <appender-ref ref="LOCAL-FILE"/>
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+
+</configuration>
